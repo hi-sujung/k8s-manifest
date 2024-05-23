@@ -15,6 +15,7 @@ spec:
       containers:
         - name: msa-front
           image: suhyen/msa-front:latest
+          ports:
             - containerPort: 80
 ---
 apiVersion: v1
