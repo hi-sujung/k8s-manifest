@@ -1,0 +1,101 @@
+#configmap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: notice-config
+data:
+  DATABASE_URL: "jdbc:mysql://34.22.89.57:3306/noticeDB?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC"
+  RABBITMQ_URL: "rabbitmq"
+  RABBITMQ_PORT: "5672"
+  UNIV_RECOMMENDATION_URL: "http://recommend-service:8081/recommend/univ" 
+  EXTERNAL_RECOMMENDATION_URL: "http://recommend-service:8081/recommend/external" 
+
+---
+
+# deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notice-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notice-deployment
+  template:
+    metadata:
+      labels:
+        app: notice-deployment
+    spec:
+      containers:
+        - name: msa-notice
+          image: everyday365/msa-notice
+          ports:
+            - containerPort: 8080
+          env:
+          - name: DATABASE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: notice-config
+                key: DATABASE_URL
+          - name: RABBITMQ_URL
+            valueFrom:
+              configMapKeyRef:
+                name: notice-config
+                key: RABBITMQ_URL
+          - name: RABBITMQ_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: notice-config
+                key: RABBITMQ_PORT
+          - name: UNIV_RECOMMENDATION_URL
+            valueFrom:
+              configMapKeyRef:
+                name: notice-config
+                key: UNIV_RECOMMENDATION_URL
+          - name: EXTERNAL_RECOMMENDATION_URL
+            valueFrom:
+              configMapKeyRef:
+                name: notice-config
+                key: EXTERNAL_RECOMMENDATION_URL
+          - name: DATABASE_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: notice-secret
+                key: DATABASE_USERNAME
+          - name: DATABASE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: notice-secret
+                key: DATABASE_PASSWORD
+          - name: RABBITMQ_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: notice-secret
+                key: RABBITMQ_USERNAME
+          - name: RABBITMQ_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: notice-secret
+                key: RABBITMQ_PASSWORD
+          - name: OPENAI_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: notice-secret
+                key: OPENAI_API_KEY
+
+---
+
+# service
+apiVersion: v1
+kind: Service
+metadata:
+  name: notice-service
+spec:
+  selector:
+    app: notice-deployment
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: LoadBalancer
