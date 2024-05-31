@@ -32,7 +32,7 @@ spec:
     spec:
       containers:
       - name: k8s-redis
-        image: suhyen/k8s-redis
+        image: suhyen/k8s-redis:latest
         ports:
         - containerPort: 6379
         volumeMounts:
