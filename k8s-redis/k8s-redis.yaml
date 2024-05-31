@@ -3,19 +3,19 @@ kind: Deployment
 metadata:
   name: redis-deployment
   labels:
-    app: msa-redis
+    app: k8s-redis
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: msa-redis
+      app: k8s-redis
   template:
     metadata:
       labels:
-        app: msa-redis
+        app: k8s-redis
     spec:
       containers:
-      - name: msa-redis
+      - name: k8s-redis
         image: redis:7.2.4-alpine3.19
         ports:
         - containerPort: 6379
@@ -25,10 +25,10 @@ kind: Service
 metadata:
   name: redis-service
   labels:
-    app: msa-redis
+    app: k8s-redis
 spec:
   selector:
-    app: msa-redis
+    app: k8s-redis
   ports:
   - protocol: TCP
     port: 6379
