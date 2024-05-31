@@ -21,43 +21,43 @@ spec:
         - name: MYSQL_URL
           valueFrom:
             secretKeyRef:
-              name: mysql-secret
-              key: url
+              name: member-secret
+              key: mysql-url
         - name: MYSQL_USERNAME
           valueFrom:
             secretKeyRef:
-              name: mysql-secret
-              key: username      
+              name: member-secret
+              key: mysql-username      
         - name: MYSQL_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: mysql-secret
-              key: password
+              name: member-secret
+              key: mysql-password
         - name: REDIS_HOST
           valueFrom:
             secretKeyRef:
-              name: redis-secret
-              key: host
+              name: member-secret
+              key: redis-host
         - name: REDIS_PORT
           valueFrom:
             secretKeyRef:
-              name: redis-secret
-              key: port
+              name: member-secret
+              key: redis-port
         - name: EMAIL_USERNAME
           valueFrom:
             secretKeyRef:
-              name: email-secret
-              key: username
+              name: member-secret
+              key: email-username
         - name: EMAIL_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: email-secret
-              key: password 
+              name: member-secret
+              key: email-password 
         - name: JWT_SECRET
           valueFrom:
             secretKeyRef:
-              name: jwt-secret
-              key: secret
+              name: member-secret
+              key: jwt-secret
 ---
 apiVersion: v1
 kind: Service
