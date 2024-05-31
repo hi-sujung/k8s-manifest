@@ -1,10 +1,26 @@
-apiVersion: apps/v1
-kind: Deployment
+# Redis Service
+apiVersion: v1
+kind: Service
 metadata:
-  name: redis-deployment
+  name: redis-service
   labels:
     app: k8s-redis
 spec:
+  ports:
+  - protocol: TCP
+    port: 6379
+    targetPort: 6379
+  clusterIP: None
+  selector:
+    app: k8s-redis
+--- 
+# Redis StatefulSet
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: redis-statefulset
+spec:
+  serviceName: redis-service
   replicas: 1
   selector:
     matchLabels:
@@ -16,21 +32,23 @@ spec:
     spec:
       containers:
       - name: k8s-redis
-        image: redis:7.2.4-alpine3.19
+        image: suhyen/k8s-redis
         ports:
         - containerPort: 6379
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: redis-service
-  labels:
-    app: k8s-redis
-spec:
-  selector:
-    app: k8s-redis
-  ports:
-  - protocol: TCP
-    port: 6379
-    targetPort: 6379
-  type: ClusterIP
+        volumeMounts:
+        - name: redis-pvc
+          mountPath: /data
+        livenessProbe:
+          tcpSocket:
+            port: 6379
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          timeoutSeconds: 10
+  volumeClaimTemplates:
+  - metadata:
+      name: redis-pvc
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 1Gi
