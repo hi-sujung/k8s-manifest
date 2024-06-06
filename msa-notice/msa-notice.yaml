@@ -1,17 +1,3 @@
-#configmap
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: notice-config
-data:
-  DATABASE_URL: "jdbc:mysql://34.22.89.57:3306/noticeDB?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC"
-  RABBITMQ_URL: "rabbitmq"
-  RABBITMQ_PORT: "5672"
-  UNIV_RECOMMENDATION_URL: "http://recommend-service:8081/recommend/univ" 
-  EXTERNAL_RECOMMENDATION_URL: "http://recommend-service:8081/recommend/external" 
-
----
-
 # deployment
 apiVersion: apps/v1
 kind: Deployment
@@ -98,4 +84,4 @@ spec:
     - protocol: TCP
       port: 8080
       targetPort: 8080
-  type: LoadBalancer
+  type: ClusterIP
