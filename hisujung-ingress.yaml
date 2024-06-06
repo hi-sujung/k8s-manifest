@@ -38,17 +38,11 @@ spec:
           name: portfolio-service
           port: 
             number: 3001
-      # - path: /springcloudgateway
-      #   pathType: Prefix
-      #   backend:
-      #     service:
-      #     name: spring-cloud-gateway-svc
-      #     # port: 
-      #     #   number: 8084
-      # - path: /recommend
-      #   pathType: Prefix
-      #   backend:
-      #     service:
-      #     name: recommend-service
-      #     # port: 
-      #     #   number: 8085
+      - path: /springcloudgateway
+        pathType: Prefix
+        backend:
+          service:
+          name: spring-cloud-gateway-svc
+          port: 
+            number: 80
+
