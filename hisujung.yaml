@@ -298,7 +298,7 @@ spec:
   - protocol: TCP
     port: 80
     targetPort: 8080
-  type: ClusterIP
+  type: LoadBalancer
 ---
 # msa-notice
 apiVersion: apps/v1
@@ -389,7 +389,7 @@ spec:
     - protocol: TCP
       port: 8080
       targetPort: 8080
-  type: ClusterIP
+  type: LoadBalancer
 ---
 # msa-portfolio
 apiVersion: apps/v1
@@ -433,7 +433,7 @@ kind: Service
 metadata:
   name: msa-portfolio
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   ports:
     - port: 3001
       targetPort: 8080
@@ -985,7 +985,7 @@ kind: Service
 metadata:
   name: spring-cloud-gateway-svc
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   selector:
     app: spring-cloud-gateway
   ports:
