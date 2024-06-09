@@ -466,7 +466,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: msa-recommend
+  name: recommend-deployment
 spec:
   replicas: 1
   selector:
@@ -489,7 +489,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: msa-recommend
+  name: recommend-service
 spec:
   type: ClusterIP
   selector:
