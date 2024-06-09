@@ -23,7 +23,7 @@ metadata:
   labels:
     app: k8s-rabbitmq
 spec:
-  type: LoadBalancer
+  type: LoadBalancer # 대시보드 접근용
   ports:
   - port: 5672
     name: amqp
@@ -501,11 +501,11 @@ spec:
 ---
 #######################################################
 ### app: msa-spring-cloud-gateway
-# msa-spring-cloud-gateway Deployment
+# msa-spring-cloud-gateway Deployment: spring-cloud-gateway-deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: spring-cloud-gateway
+  name: spring-cloud-gateway-deployment
   labels:
     app: spring-cloud-gateway
 spec:
