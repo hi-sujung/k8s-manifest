@@ -866,7 +866,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: msa-portfolio
+  name: portfolio-deployment
 spec:
   replicas: 1
   selector: # 디플로이먼트 제어하의 레플리카셋과 파드를 대응시키기 위해 라벨 사용
