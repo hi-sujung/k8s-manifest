@@ -258,7 +258,7 @@ spec:
     spec:
       containers:
       - name: msa-member
-        image: suhyen/msa-member:latest
+        image: suhyen/msa-member:latest
         ports:
         - containerPort: 8080
         env:
