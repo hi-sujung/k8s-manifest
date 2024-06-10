@@ -85,61 +85,61 @@ spec:
             claimName: k8s-rabbitmq-pvc
 ---
 #######################################################
-### app: k8s-redis
-# k8s-redis Service
-apiVersion: v1
-kind: Service
-metadata:
-  name: redis-service
-  labels:
-    app: k8s-redis
-spec:
-  type: ClusterIP
-  ports:
-  - protocol: TCP
-    port: 6379
-    targetPort: 6379
-  selector:
-    app: k8s-redis
----
-# k8s-redis StatefulSet
-apiVersion: apps/v1
-kind: StatefulSet
-metadata:
-  name: redis-statefulset
-spec:
-  serviceName: redis-service
-  replicas: 1
-  selector:
-    matchLabels:
-      app: k8s-redis
-  template:
-    metadata:
-      labels:
-        app: k8s-redis
-    spec:
-      containers:
-      - name: k8s-redis
-        image: redis:7.2.4-alpine3.19
-        ports:
-        - containerPort: 6379
-        volumeMounts:
-        - name: redis-pvc
-          mountPath: /data
-        livenessProbe:
-          tcpSocket:
-            port: 6379
-          initialDelaySeconds: 20
-          periodSeconds: 10
-          timeoutSeconds: 10
-  volumeClaimTemplates:
-  - metadata:
-      name: redis-pvc
-    spec:
-      accessModes: ["ReadWriteOnce"]
-      resources:
-        requests:
-          storage: 1Gi
+# ### app: k8s-redis
+# # k8s-redis Service
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: redis-service
+#   labels:
+#     app: k8s-redis
+# spec:
+#   type: ClusterIP
+#   ports:
+#   - protocol: TCP
+#     port: 6379
+#     targetPort: 6379
+#   selector:
+#     app: k8s-redis
+# ---
+# # k8s-redis StatefulSet
+# apiVersion: apps/v1
+# kind: StatefulSet
+# metadata:
+#   name: redis-statefulset
+# spec:
+#   serviceName: redis-service
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: k8s-redis
+#   template:
+#     metadata:
+#       labels:
+#         app: k8s-redis
+#     spec:
+#       containers:
+#       - name: k8s-redis
+#         image: redis:7.2.4-alpine3.19
+#         ports:
+#         - containerPort: 6379
+#         volumeMounts:
+#         - name: redis-pvc
+#           mountPath: /data
+#         livenessProbe:
+#           tcpSocket:
+#             port: 6379
+#           initialDelaySeconds: 20
+#           periodSeconds: 10
+#           timeoutSeconds: 10
+#   volumeClaimTemplates:
+#   - metadata:
+#       name: redis-pvc
+#     spec:
+#       accessModes: ["ReadWriteOnce"]
+#       resources:
+#         requests:
+#           storage: 1Gi
 ---
 #######################################################
 ### msa-crawling-external
@@ -277,13 +277,10 @@ spec:
             secretKeyRef:
               name: member-secret
               key: mysql-password
-        - name: REDIS_HOST
-          value: redis-service
-        - name: REDIS_PORT
-          valueFrom:
-            secretKeyRef:
-              name: member-secret
-              key: redis-port
+        # - name: REDIS_HOST
+        #   value: redis-service  # k8s-redis 서비스의 DNS 이름을 사용
+        # - name: REDIS_PORT
+        #   value: "6379"  # Redis 포트
         - name: EMAIL_USERNAME
           valueFrom:
             secretKeyRef:
@@ -547,3 +544,4 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 8081
+
