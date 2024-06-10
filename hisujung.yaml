@@ -258,7 +258,7 @@ spec:
     spec:
       containers:
       - name: msa-member
-        image: jekim12/msa-member:latest
+        image: suhyen/msa-member:latest
         ports:
         - containerPort: 8080
         env:
@@ -544,4 +544,3 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 8081
-
