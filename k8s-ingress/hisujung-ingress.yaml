@@ -1,5 +1,5 @@
 ### hisujung url ###
-# member: http://hisujung/member 
+# member: http://hisujung/member
 # notice: http://hisujung/notice
 # portfolio: http://hisujung/portfolio
 # springcloudgateway: http://hisujung/springcloudgateway
@@ -14,41 +14,41 @@ metadata:
     # nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  # - host: hisujung
-  - http:
-      paths:
-      - pathType: Prefix
-        path: /member
-        backend:
-          service:
-            name: member-service
-            port:
-              number: 80
-      - pathType: Prefix
-        path: /notice
-        backend:
-          service:
-            name: notice-service
-            port:
-              number: 8080
-       - pathType: Prefix
-         path: /recommend
-         backend:
-            service:
-              name: notice-service
-              port:
-                 number: 8080
-      - pathType: Prefix
-        path: /portfolio
-        backend:
-          service:
-            name: portfolio-service
-            port:
-              number: 3001
-      - pathType: Prefix
-        path: /springcloudgateway
-        backend:
-          service:
-            name: spring-cloud-gateway-svc
-            port:
-              number: 80
+    # - host: hisujung
+    - http:
+        paths:
+          - pathType: Prefix
+            path: /member
+            backend:
+              service:
+                name: member-service
+                port:
+                  number: 80
+          - pathType: Prefix
+            path: /notice
+            backend:
+              service:
+                name: notice-service
+                port:
+                  number: 8080
+          - pathType: Prefix
+            path: /recommend
+            backend:
+              service:
+                name: notice-service
+                port:
+                  number: 8080
+          - pathType: Prefix
+            path: /portfolio
+            backend:
+              service:
+                name: portfolio-service
+                port:
+                  number: 3001
+          - pathType: Prefix
+            path: /springcloudgateway
+            backend:
+              service:
+                name: spring-cloud-gateway-svc
+                port:
+                  number: 80
