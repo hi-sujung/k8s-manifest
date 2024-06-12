@@ -1,20 +1,12 @@
-### hisujung url ###
-# member: http://hisujung/member
-# notice: http://hisujung/notice
-# portfolio: http://hisujung/portfolio
-# springcloudgateway: http://hisujung/springcloudgateway
-
-
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: hisujung-ingress
   annotations:
-    kubernetes.io/ingress.class: 'nginx'
-    # nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: "/$2"
 spec:
   rules:
-    # - host: hisujung
     - http:
         paths:
           - pathType: Prefix
@@ -46,7 +38,7 @@ spec:
                 port:
                   number: 3001
           - pathType: Prefix
-            path: /springcloudgateway
+            path: /springcloudgateway(/|$)(.*)
             backend:
               service:
                 name: spring-cloud-gateway-svc
