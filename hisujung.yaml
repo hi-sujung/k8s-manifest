@@ -428,7 +428,7 @@ spec:
     spec:
       containers: # 파드 컨테이너의 사양
       - name: msa-portfolio
-        image: julia2039/msa-portfolio:v3
+        image: julia2039/msa-portfolio:v4
         ports:
           - containerPort: 8080
         env:
