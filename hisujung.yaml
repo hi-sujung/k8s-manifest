@@ -85,63 +85,6 @@ spec:
             claimName: k8s-rabbitmq-pvc
 ---
 #######################################################
-# ### app: k8s-redis
-# # k8s-redis Service
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: redis-service
-#   labels:
-#     app: k8s-redis
-# spec:
-#   type: ClusterIP
-#   ports:
-#   - protocol: TCP
-#     port: 6379
-#     targetPort: 6379
-#   selector:
-#     app: k8s-redis
-# ---
-# # k8s-redis StatefulSet
-# apiVersion: apps/v1
-# kind: StatefulSet
-# metadata:
-#   name: redis-statefulset
-# spec:
-#   serviceName: redis-service
-#   replicas: 1
-#   selector:
-#     matchLabels:
-#       app: k8s-redis
-#   template:
-#     metadata:
-#       labels:
-#         app: k8s-redis
-#     spec:
-#       containers:
-#       - name: k8s-redis
-#         image: redis:7.2.4-alpine3.19
-#         ports:
-#         - containerPort: 6379
-#         volumeMounts:
-#         - name: redis-pvc
-#           mountPath: /data
-#         livenessProbe:
-#           tcpSocket:
-#             port: 6379
-#           initialDelaySeconds: 20
-#           periodSeconds: 10
-#           timeoutSeconds: 10
-#   volumeClaimTemplates:
-#   - metadata:
-#       name: redis-pvc
-#     spec:
-#       accessModes: ["ReadWriteOnce"]
-#       resources:
-#         requests:
-#           storage: 1Gi
----
-#######################################################
 ### msa-crawling-external
 apiVersion: batch/v1
 kind: CronJob
@@ -203,41 +146,6 @@ spec:
           restartPolicy: OnFailure
           imagePullSecrets:
           - name: regcred
----
-#######################################################
-# msa-front
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   name: front-deployment
-# spec:
-#   replicas: 1
-#   selector:
-#     matchLabels:
-#       app: msa-front
-#   template:
-#     metadata:
-#       labels:
-#         app: msa-front
-#     spec:
-#       containers:
-#         - name: msa-front
-#           image: suhyen/msa-front:latest
-#           ports:
-#             - containerPort: 80
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: front-service
-# spec:
-#   selector:
-#     app: msa-front
-#   ports:
-#     - protocol: TCP
-#       port: 80
-#       targetPort: 80
-#   type: LoadBalancer
 ---
 #######################################################
 ### app: msa-member
@@ -309,7 +217,7 @@ spec:
   - protocol: TCP
     port: 80
     targetPort: 8080
-  type: LoadBalancer
+  type: ClusterIP
 ---
 #######################################################
 ### app: msa-notice
@@ -407,7 +315,7 @@ spec:
     - protocol: TCP
       port: 8080
       targetPort: 8080
-  type: LoadBalancer
+  type: ClusterIP
 ---
 #######################################################
 ### app: msa-portfolio
@@ -454,7 +362,7 @@ kind: Service
 metadata:
   name: portfolio-service
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   ports:
     - port: 3001
       targetPort: 8080
@@ -499,55 +407,6 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 5000
----
-#######################################################
-### app: msa-spring-cloud-gateway
-# msa-spring-cloud-gateway Deployment: spring-cloud-gateway-deployment
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: spring-cloud-gateway-deployment
-  labels:
-    app: spring-cloud-gateway
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: spring-cloud-gateway
-  template:
-    metadata:
-      labels:
-        app: spring-cloud-gateway
-    spec:
-      containers:
-        - name: spring-cloud-gateway
-          image: julia2039/spring-cloud-gateway:latest # 실제 이미지로 변경
-          ports:
-            - containerPort: 8081
-          env:
-            - name: SPRING_PROFILES_ACTIVE
-              value: k8s # Kubernetes 환경에 맞게 프로필 설정
-          volumeMounts:
-            - name: config-volume
-              mountPath: /config
-      volumes:
-        - name: config-volume
-          configMap:
-            name: spring-cloud-gateway-config
----
-# msa-spring-cloud-gateway Service
-apiVersion: v1
-kind: Service
-metadata:
-  name: spring-cloud-gateway-svc
-spec:
-  type: LoadBalancer
-  selector:
-    app: spring-cloud-gateway
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 8081
 
 ---
 ## auth-server##
@@ -580,7 +439,7 @@ kind: Service
 metadata:
   name:  auth-service
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: auth
   ports:
