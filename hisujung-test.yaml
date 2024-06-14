@@ -170,9 +170,9 @@ spec:
         ports:
         - containerPort: 8080
         resources:
-          requests:
-            memory: "128Mi" 
-            cpu: "100m" # 0.1 CPU core 
+            requests:
+              memory: "128Mi" 
+              cpu: "100m" # 0.1 CPU core 
         env:
         - name: MYSQL_URL
           valueFrom:
@@ -189,10 +189,6 @@ spec:
             secretKeyRef:
               name: member-secret
               key: mysql-password
-        # - name: REDIS_HOST
-        #   value: redis-service  # k8s-redis 서비스의 DNS 이름을 사용
-        # - name: REDIS_PORT
-        #   value: "6379"  # Redis 포트
         - name: EMAIL_USERNAME
           valueFrom:
             secretKeyRef:
@@ -221,7 +217,7 @@ spec:
   - protocol: TCP
     port: 80
     targetPort: 8080
-  type: ClusterIP
+  type: LoadBalancer
 ---
 #######################################################
 ### app: msa-notice
@@ -251,9 +247,9 @@ spec:
         ports:
         - containerPort: 8080
         resources:
-          requests:
-            memory: "128Mi" 
-            cpu: "100m" # 0.1 CPU core
+            requests:
+              memory: "128Mi" 
+              cpu: "100m" # 0.1 CPU core 
         env:
         - name: DATABASE_URL
           valueFrom:
@@ -323,7 +319,7 @@ spec:
     - protocol: TCP
       port: 8080
       targetPort: 8080
-  type: ClusterIP
+  type: LoadBalancer
 ---
 #######################################################
 ### app: msa-portfolio
@@ -344,13 +340,13 @@ spec:
     spec:
       containers: # 파드 컨테이너의 사양
       - name: msa-portfolio
-        image: julia2039/msa-portfolio:v7
+        image: julia2039/msa-portfolio:v4
         ports:
           - containerPort: 8080
         resources:
-          requests:
-            memory: "128Mi" 
-            cpu: "100m" # 0.1 CPU core
+            requests:
+              memory: "128Mi" 
+              cpu: "100m" # 0.1 CPU core 
         env:
           - name: DATABASE_URL
             valueFrom:
@@ -374,7 +370,7 @@ kind: Service
 metadata:
   name: portfolio-service
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   ports:
     - port: 3001
       targetPort: 8080
