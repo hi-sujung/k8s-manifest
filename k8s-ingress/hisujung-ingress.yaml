@@ -1,10 +1,15 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: hisujung-ingress
+  name: ingress-nginx
   annotations:
-    kubernetes.io/ingress.class: "nginx"
-    nginx.ingress.kubernetes.io/rewrite-target: "/$2"
+    kubernetes.io/ingress.class: 'nginx'
+    nginx.ingress.kubernetes.io/auth-url: "http://localhost:8080/oauth2/auth"
+    nginx.ingress.kubernetes.io/auth-response-headers: "X-Authoization-Id"
+    nginx.ingress.kubernetes.io/auth-method: GET
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
 spec:
   rules:
     - http:
@@ -37,10 +42,3 @@ spec:
                 name: portfolio-service
                 port:
                   number: 3001
-          - pathType: Prefix
-            path: /springcloudgateway(/|$)(.*)
-            backend:
-              service:
-                name: spring-cloud-gateway-svc
-                port:
-                  number: 80
