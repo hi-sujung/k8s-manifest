@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: redis-service
   labels:
-    app: k8s-redis
+    app: msa-redis
 spec:
   ports:
   - protocol: TCP
@@ -12,7 +12,7 @@ spec:
     targetPort: 6379
   clusterIP: None
   selector:
-    app: k8s-redis
+    app: msa-redis
 --- 
 # Redis StatefulSet
 apiVersion: apps/v1
@@ -24,15 +24,15 @@ spec:
   replicas: 3
   selector:
     matchLabels:
-      app: k8s-redis
+      app: msa-redis
   template:
     metadata:
       labels:
-        app: k8s-redis
+        app: msa-redis
     spec:
       containers:
-      - name: k8s-redis
-        image: suhyen/k8s-redis:latest
+      - name: msa-redis
+        image: suhyen/msa-redis:latest
         ports:
         - containerPort: 6379
         volumeMounts:
