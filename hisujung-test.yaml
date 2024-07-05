@@ -15,7 +15,7 @@ spec:
       storage: 10Gi
   storageClassName: standard
 ---
-# k8s-rabbitmq Service
+# msa-rabbitmq Service
 apiVersion: v1
 kind: Service
 metadata:
@@ -101,7 +101,7 @@ spec:
             image: hyezis/msa-crawling-external:latest
             env:
             - name: RABBITMQ_HOST
-              value: k8s-rabbitmq
+              value: msa-rabbitmq
             - name: RABBITMQ_USER
               valueFrom:
                 secretKeyRef:
@@ -132,7 +132,7 @@ spec:
             image: hyezis/msa-crawling-univ:latest
             env:
             - name: RABBITMQ_HOST
-              value: k8s-rabbitmq
+              value: msa-rabbitmq
             - name: RABBITMQ_USER
               valueFrom:
                 secretKeyRef:
@@ -239,7 +239,7 @@ spec:
       initContainers:
       - name: wait-for-rabbitmq
         image: busybox:1.28
-        command: [ 'sh', '-c', 'until nc -z k8s-rabbitmq 5672; do echo waiting for rabbitmq; sleep 2; done;' ]
+        command: [ 'sh', '-c', 'until nc -z msa-rabbitmq 5672; do echo waiting for rabbitmq; sleep 2; done;' ]
       containers:
       - name: msa-notice
         image: everyday365/msa-notice:v4
