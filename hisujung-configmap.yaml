@@ -1,0 +1,26 @@
+# msa-notice ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: notice-config
+data:
+  RABBITMQ_URL: 
+  RABBITMQ_PORT: 
+  UNIV_RECOMMENDATION_URL: 
+  EXTERNAL_RECOMMENDATION_URL: 
+  PORTFOLIO_MS: 
+---
+# msa-spring-cloud-gateway ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spring-cloud-gateway-config
+data:
+  SPRING_CLOUD_GATEWAY_ROUTES_0_URI: 
+  SPRING_CLOUD_GATEWAY_ROUTES_0_PREDICATES_0: 
+  SPRING_CLOUD_GATEWAY_ROUTES_0_FILTERS_0: 
+  SPRING_CLOUD_GATEWAY_ROUTES_1_URI: 
+  SPRING_CLOUD_GATEWAY_ROUTES_1_PREDICATES_0: 
+  SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0: 
+  SERVER_PORT: 
+  JWT_TOKEN_VALIDITY_IN_SECONDS: 
