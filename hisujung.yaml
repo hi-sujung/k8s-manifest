@@ -101,7 +101,7 @@ spec:
             image: hyezis/msa-crawling-external:latest
             env:
             - name: RABBITMQ_HOST
-              value: k8s-rabbitmq
+              value: msa-rabbitmq
             - name: RABBITMQ_USER
               valueFrom:
                 secretKeyRef:
@@ -132,7 +132,7 @@ spec:
             image: hyezis/msa-crawling-univ:latest
             env:
             - name: RABBITMQ_HOST
-              value: k8s-rabbitmq
+              value: msa-rabbitmq
             - name: RABBITMQ_USER
               valueFrom:
                 secretKeyRef:
@@ -186,7 +186,7 @@ spec:
               name: member-secret
               key: mysql-password
         # - name: REDIS_HOST
-        #   value: redis-service  # k8s-redis 서비스의 DNS 이름을 사용
+        #   value: redis-service  # msa-redis 서비스의 DNS 이름을 사용
         # - name: REDIS_PORT
         #   value: "6379"  # Redis 포트
         - name: EMAIL_USERNAME
@@ -239,7 +239,7 @@ spec:
       initContainers:
       - name: wait-for-rabbitmq
         image: busybox:1.28
-        command: [ 'sh', '-c', 'until nc -z k8s-rabbitmq 5672; do echo waiting for rabbitmq; sleep 2; done;' ]
+        command: [ 'sh', '-c', 'until nc -z msa-rabbitmq 5672; do echo waiting for rabbitmq; sleep 2; done;' ]
       containers:
       - name: msa-notice
         image: everyday365/msa-notice:v4
