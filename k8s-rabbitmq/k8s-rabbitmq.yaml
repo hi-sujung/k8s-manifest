@@ -1,9 +1,10 @@
+# msa-rabbitmq PVC
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: k8s-rabbitmq-pvc
+  name: msa-rabbitmq-pvc
   labels:
-    app: k8s-rabbitmq-pvc
+    app: msa-rabbitmq-pvc
 spec:
   accessModes:
     - ReadWriteOnce
@@ -12,39 +13,41 @@ spec:
       storage: 10Gi
   storageClassName: standard
 ---
+# msa-rabbitmq Service
 apiVersion: v1
 kind: Service
 metadata:
-  name: k8s-rabbitmq
+  name: msa-rabbitmq
   labels:
-    app: k8s-rabbitmq
+    app: msa-rabbitmq
 spec:
-  type: LoadBalancer
+  type: LoadBalancer # 대시보드 접근용
   ports:
   - port: 5672
     name: amqp
   - port: 15672
     name: management
   selector:
-    app: k8s-rabbitmq
+    app: msa-rabbitmq
 ---
+# msa-rabbitmq StatefulSet
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: k8s-rabbitmq
+  name: msa-rabbitmq
 spec:
   replicas: 1
-  serviceName: k8s-rabbitmq
+  serviceName: msa-rabbitmq
   selector:
     matchLabels:
-      app: k8s-rabbitmq
+      app: msa-rabbitmq
   template:
     metadata:
       labels:
-        app: k8s-rabbitmq
+        app: msa-rabbitmq
     spec:
       containers:
-      - name: k8s-rabbitmq
+      - name: msa-rabbitmq
         image: rabbitmq:3-management
         ports:
         - containerPort: 5672
@@ -65,8 +68,15 @@ spec:
         volumeMounts:
         - mountPath: /var/lib/rabbitmq
           name: rabbitmq-data
+        livenessProbe:
+            httpGet:
+              path: /
+              port: 15672
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 10
       volumes:
         - name: rabbitmq-data
-          hostPath:
-            path: /data/rabbitmq
-            type: DirectoryOrCreate
+          persistentVolumeClaim:
+            claimName: msa-rabbitmq-pvc
